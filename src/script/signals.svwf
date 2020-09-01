@@ -1,0 +1,67 @@
+
+#
+# Mnemonic Maps
+#
+mmap new -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+array unset createdGroup
+array set createdGroup {}
+#
+# Groups
+#
+if {[catch {group get -using [list Group 1]}]} {
+set createdGroup([list Group 1]) 1
+catch {group new -name {Group 1} -overlay 0}
+}
+if {[catch {group get -using [list Group 2]}]} {
+set createdGroup([list Group 2]) 1
+catch {group new -name {Group 2} -overlay 0}
+}
+if {[info exists createdGroup([list Group 1])]} {
+group using {Group 1}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+group insert \
+    [subst  {[format {wb2uart_tb_top.rst_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.clk_wb_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.clk_uart_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_cyc_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_stb_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_addr_tb[4:0]}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_we_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_sel_tb[3:0]}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_data_m2s_tb[31:0]}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_data_s2m_tb[31:0]}]} ] \
+    [subst  {[format {wb2uart_tb_top.wb_ack_tb}]} ]
+}
+
+if {[info exists createdGroup([list Group 2])]} {
+group using {Group 2}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+group insert \
+    [subst  {[format {wb2uart_tb_top.intterrupt_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.srx_pad_o_tb}]} ] \
+    [subst  {[format {wb2uart_tb_top.stx_pad_o_tb}]} ] \
+    {### cdivider}
+}
+
+set id [waveform add -cdivider divider]
+set id [waveform add -label {WISHBONE SIGNALS} -comment {}]
+
+set groupId0 [waveform add -groups {{Group 1}}]
+
+set id [waveform add -cdivider divider]
+set id [waveform add -label {UART SIGNALS} -comment {}]
+
+set groupId0 [waveform add -groups {{Group 2}}]
+
+
+waveform xview limits 0 2000ps

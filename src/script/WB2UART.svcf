@@ -1,0 +1,14 @@
+#-------------------------------------------------------------------------------
+# Copyright (c) 2018 Elsys Eastern Europe
+# All rights reserved.
+#-------------------------------------------------------------------------------
+# File name  : WB2UART.svcf
+# Developer  : Aleksandar Komazec
+# Date       : 
+# Description: 
+# Notes      : 
+#
+#-------------------------------------------------------------------------------
+
+window new WaveWindow -name "Waveform 1"
+
