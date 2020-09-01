@@ -1,0 +1,18 @@
+
+        3.1 Receiver Buffer
+The RBR, receiver buffer register contains the byte received 
+if no FIFO is used, or the oldest unread byte with FIFO's. 
+If FIFO buffering is used, each new read action of the register
+ will return the next byte, until no more bytes are present. 
+Bit 0 in the LSR line status register can be used to check if 
+all received bytes have been read. This bit wil change to 
+zero if no more bytes are present.
+        
+	3.2 Transmitter Holding Register (THR) 
+        3.3 Interrupt Enable
+        3.4 Interrupt Identification
+        3.5 FIFO Control
+        3.6 Line Control Register
+        3.7 Modem Control
+        3.8 Line Status
+        3.9 Modem Status
